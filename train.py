@@ -124,10 +124,12 @@ def dev_point_wise():
                         cnn.q_position: data[2],
                         cnn.dropout_keep_prob: FLAGS.dropout_keep_prob
                     }
+                    start = time.time()
                     _, step, loss, accuracy = sess.run(
                         [train_op, global_step, cnn.loss, cnn.accuracy], feed_dict)
                     time_str = datetime.datetime.now().isoformat()
-                    print("{}: step {}, loss {:g}, acc {:g}  ".format(time_str, step, loss, accuracy))
+                    
+                    print("{}: step {}, loss {:g}, acc {:g}  in {} seconds ".format(time_str, step, loss, accuracy,time.time()-start))
                 predicted = predict(sess, cnn, train, alphabet, FLAGS.batch_size, q_max_sent_length)
                 predicted_label = np.argmax(predicted, 1)
                 acc_train= accuracy_score(predicted_label,train['flag'])
