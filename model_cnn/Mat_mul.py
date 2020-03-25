@@ -45,7 +45,7 @@ class CNN(object):
 
         # self.weighted_q = tf.Variable(tf.ones([1,self.max_input_left,1,1]) , name = 'weighted_q')
         # self.para.append(self.weighted_q)
-        one = [1 for i in range(self.max_input_left)]
+        one = [1. for i in range(self.max_input_left)]
         self.weighted_q = tf.Variable(tf.diag(one), name = 'weighted_q')
         self.weighted_q = tf.expand_dims(self.weighted_q,0)
         # self.weighted_q = tf.Variable(tf.ones([1,self.max_input_left,self.max_input_left]) , name = 'weighted_q')
