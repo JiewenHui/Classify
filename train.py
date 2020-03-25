@@ -7,8 +7,10 @@ import datetime
 from helper import batch_gen_with_point_wise, load, prepare, batch_gen_with_single,load_trec_sst2
 import operator
 from model_cnn import *
-# from model_cnn.CNN_origin import CNN
-from model_cnn.Complex_order import CNN
+# from model_cnn.CNN_origin import CNN as model
+from model_cnn.square_fasttext import square_fasttext as model
+# from model_cnn.fasttext import fasttext as model
+# from model_cnn.Complex_order import CNN as model
 import random
 from sklearn.metrics import accuracy_score
 import pickle
@@ -93,7 +95,7 @@ def dev_point_wise():
         with sess.as_default(), open(precision, "w") as log:
             s='embedding_dim:  '+str(FLAGS.embedding_dim)+'\n'+'dropout_keep_prob:  '+str(FLAGS.dropout_keep_prob)+'\n'+'l2_reg_lambda:  '+str(FLAGS.l2_reg_lambda)+'\n'+'learning_rate:  '+str(FLAGS.learning_rate)+'\n'+'batch_size:  '+str(FLAGS.batch_size)+'\n''trainable:  '+str(FLAGS.trainable)+'\n'+'num_filters:  '+str(FLAGS.num_filters)+'\n''data:  '+str(FLAGS.data)+'\n'
             log.write(str(s) + '\n')
-            cnn = CNN(
+            cnn = model(
                 max_input_left=q_max_sent_length,
                 vocab_size=len(alphabet),
                 embeddings=embeddings,
