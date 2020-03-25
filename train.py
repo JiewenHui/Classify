@@ -7,10 +7,13 @@ import datetime
 from helper import batch_gen_with_point_wise, load, prepare, batch_gen_with_single,load_trec_sst2
 import operator
 from model_cnn import *
+
 # from model_cnn.CNN_origin import CNN as model
 from model_cnn.square_fasttext import square_fasttext as model
 # from model_cnn.fasttext import fasttext as model
 # from model_cnn.Complex_order import CNN as model
+
+
 import random
 from sklearn.metrics import accuracy_score
 import pickle
@@ -18,7 +21,7 @@ import config
 from functools import wraps
 
 
-
+print("hello world")
 now = int(time.time())
 timeArray = time.localtime(now)
 timeStamp = time.strftime("%Y%m%d%H%M%S", timeArray)
