@@ -77,7 +77,7 @@ def process(dataset=dataset):
     test_filename = os.path.join(saved_path,"dev.csv")
     train[["text","label"]].to_csv(train_filename,encoding="utf-8",sep="\t",index=False,header=None)
     dev[["text","label"]].to_csv(test_filename,encoding="utf-8",sep="\t",index=False,header=None)
-    print("processing into formated files over") 
+  #  print("processing into formated files over") 
 
 
 def cut(sentence, isEnglish=isEnglish):
@@ -95,7 +95,7 @@ def log_time_delta(func):
         ret = func(*args, **kwargs)
         end = time.time()
         delta = end - start
-        print("%s runed %.2f seconds" % (func.__name__, delta))
+   #     print("%s runed %.2f seconds" % (func.__name__, delta))
         return ret
     return _deco
 
@@ -124,7 +124,9 @@ def prepare(cropuses, max_sent_length=31, is_embedding_needed=False, dim=50, fre
 
     if os.path.exists(vocab_file) and not fresh:
         alphabet = pickle.load(open(vocab_file, 'r'))
+   
     else:
+        
         alphabet = Alphabet(start_feature_id=0)
         alphabet.add('[UNKNOW]')
         alphabet.add('END')
@@ -139,7 +141,8 @@ def prepare(cropuses, max_sent_length=31, is_embedding_needed=False, dim=50, fre
                     for token in set(tokens):
                         alphabet.add(token)
         print (len(alphabet.keys()))
-        alphabet.dump('alphabet_clean.txt')
+        # print('alphatbet is :',alphabet)
+        # alphabet.dump('alphabet_clean.txt')
     if is_embedding_needed:
         # sub_vec_file = '../embedding/sub_vector'
         # if os.path.exists(sub_vec_file) and not fresh:
@@ -166,8 +169,12 @@ def prepare(cropuses, max_sent_length=31, is_embedding_needed=False, dim=50, fre
             sub_embeddings = getSubVectorsFromDict(
                 embeddings, alphabet, dim)
             # pickle.dump(sub_embeddings, open(sub_vec_file, 'wb'))
+      #  print('_'*100)
+      #  print(len(alphabet))
+        
         return alphabet, sub_embeddings
     else:
+        print(alphabet)
         return alphabet
 
 
@@ -278,9 +285,9 @@ def load_text_vec(alphabet, filename="", embedding_size=100):
                 word = items[0]
                 if word in alphabet:
                     vectors[word] = items[1:]
-    print ('embedding_size', embedding_size)
-    print ('done')
-    print ('words found in wor2vec embedding ', len(vectors.keys()))
+   # print ('embedding_size', embedding_size)
+   # print ('done')
+   # print ('words found in wor2vec embedding ', len(vectors.keys()))
     return vectors
 
 
@@ -297,7 +304,7 @@ def getSubVectorsFromDict(vectors, vocab, dim=300):
             file.write(word + '\n')
             embedding[vocab[word]] = np.random.uniform(-0.5, +0.5, dim)
     file.close()
-    print ('word in embedding', count)
+   # print ('word in embedding', count)
     return embedding
 
 
@@ -312,7 +319,7 @@ def encode_to_split(sentence, alphabet, max_sentence=40):
     indices = []
     tokens = cut(sentence)
     for word in tokens:
-        indices.append(alphabet[0][word])
+        indices.append(alphabet[word])
     while(len(indices) < max_sentence):
         indices += indices[:(max_sentence - len(indices))]
     return indices[:max_sentence]
