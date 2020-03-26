@@ -54,6 +54,9 @@ class fasttext(object):
 
         return tf.nn.embedding_lookup(self.embedding_W,text)
 
+    def get_representation(self,embedded):
+        hidden = tf.reduce_sum(embedded,-2)
+        return hidden
     def clasify(self,hidden,dim):
         with tf.name_scope("output"):
             l2_loss = tf.constant(0.0)
@@ -81,7 +84,7 @@ class fasttext(object):
 
         self.create_placeholder()
         embedded_chars_q = self.get_embedding(self.question)
-        hidden = tf.reduce_sum(embedded_chars_q,-2) 
+        hidden = self.get_representation(embedded_chars_q) 
 
         self.clasify(hidden,self.embedding_size)
     
