@@ -11,8 +11,12 @@ from model_cnn import *
 # from model_cnn.CNN_origin import CNN as model
 # from model_cnn.square_fasttext import square_fasttext as model
 # from model_cnn.fasttext import fasttext as model
-from model_cnn.Complex_order import CNN as model
+# from model_cnn.Complex_order import CNN as model
 # from model_cnn.Mat_mul import CNN as model
+# from model_cnn.abs_fasttext import abs_fasttext  as model
+# from model_cnn.Second_Order_feature import second_feature as model
+# from model_cnn.flat_second import second_feature as model
+from model_cnn.text_CNN import text_cnn as model
 
 import random
 from sklearn.metrics import accuracy_score
@@ -183,4 +187,17 @@ if __name__ == '__main__':
             for attr, value in sorted(FLAGS.__flags.items()):
                 print(("{}={}".format(attr.upper(), value)))
             dev_point_wise()
+        timeStamp = time.strftime("%Y%m%d%H%M%S", timeArray)
+        data_file = log_dir + '/Finaly_dev_' + FLAGS.data + timeStamp
+        with tf.device("/gpu:0"):
+            session_conf = tf.ConfigProto()
+            session_conf.allow_soft_placement = FLAGS.allow_soft_placement
+            session_conf.log_device_placement = FLAGS.log_device_placement
+            session_conf.gpu_options.allow_growth = True
+        sess = tf.Session(config=session_conf)
+        with sess.as_default(), open(data_file, "w") as log:
+            s='embedding_dim:  '+str(FLAGS.embedding_dim)+'\n'+'dropout_keep_prob:  '+str(FLAGS.dropout_keep_prob)+'\n'+'l2_reg_lambda:  '+str(FLAGS.l2_reg_lambda)+'\n'+'learning_rate:  '+str(FLAGS.learning_rate)+'\n'+'batch_size:  '+str(FLAGS.batch_size)+'\n''trainable:  '+str(FLAGS.trainable)+'\n'+'num_filters:  '+str(FLAGS.num_filters)+'\n''data:  '+str(FLAGS.data)+'\n'
+            log.write(str(s) + '\n')
+            line_="the average acc {}".format(np.mean(acc_flod))
+            log.write(line_ + '\n')
         print("the average acc {}".format(np.mean(acc_flod)))
