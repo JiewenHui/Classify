@@ -9,10 +9,10 @@ import operator
 from model_cnn import *
 
 # from model_cnn.CNN_origin import CNN as model
-from model_cnn.square_fasttext import square_fasttext as model
+# from model_cnn.square_fasttext import square_fasttext as model
 # from model_cnn.fasttext import fasttext as model
-# from model_cnn.Complex_order import CNN as model
-
+from model_cnn.Complex_order import CNN as model
+# from model_cnn.Mat_mul import CNN as model
 
 import random
 from sklearn.metrics import accuracy_score
@@ -81,7 +81,7 @@ def dev_point_wise():
         alphabet,embeddings = prepare([train, dev,test], max_sent_length=q_max_sent_length, dim=FLAGS.embedding_dim, is_embedding_needed=True, fresh=True)
     else:
         # alphabet,embeddings = prepare([train, dev], max_sent_length=q_max_sent_length, dim=FLAGS.embedding_dim, is_embedding_needed=False, fresh=True)
-        alphabet = prepare([train, dev], max_sent_length=q_max_sent_length, dim=FLAGS.embedding_dim, is_embedding_needed=True, fresh=True)
+        alphabet,embeddings = prepare([train, dev], max_sent_length=q_max_sent_length, dim=FLAGS.embedding_dim, is_embedding_needed=True, fresh=True)
     print ('alphabet:', len(alphabet))
     with tf.Graph().as_default():
         with tf.device("/gpu:0"):
