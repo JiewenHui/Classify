@@ -72,9 +72,9 @@ class CNN(object):
         ### [1,position_size] ###
         position_j = 1. / tf.pow(10000., 2 * tf.range(position_size, dtype=tf.float32) / position_size)
         position_j = tf.expand_dims(position_j, 0)
-        position_j = tf.tile(position_j,[self.vocab_size,1])
-       # print(position_j)
-       # exit()
+        position_embedding = tf.tile(position_j,[self.vocab_size,1])
+        # print(position_embedding)
+        # exit()
         '''
         output :[vocab_size,embedding_size]
         tf.repeat [1,embedding] ,repeat vocab_size = vocab_size,embedding
