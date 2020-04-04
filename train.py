@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 import time
 import datetime
-from helper import batch_gen_with_point_wise, load, prepare, batch_gen_with_single,load_trec_sst2
+from helper import load_ag_news, batch_gen_with_point_wise, load, prepare, batch_gen_with_single,load_trec_sst2
 import operator
 from model_cnn import *
 
@@ -16,7 +16,9 @@ from model_cnn import *
 # from model_cnn.abs_fasttext import abs_fasttext  as model
 # from model_cnn.Second_Order_feature import second_feature as model
 # from model_cnn.flat_second import second_feature as model
-from model_cnn.text_CNN import text_cnn as model
+# from model_cnn.text_CNN import text_cnn as model
+# from model_cnn.share_vocab import CNN as model
+from model_cnn.share_dim import CNN as model
 
 import random
 from sklearn.metrics import accuracy_score
@@ -25,7 +27,7 @@ import config
 from functools import wraps
 
 
-print("hello world")
+
 now = int(time.time())
 timeArray = time.localtime(now)
 timeStamp = time.strftime("%Y%m%d%H%M%S", timeArray)
@@ -71,6 +73,8 @@ def predict(sess, cnn, dev, alphabet, batch_size, q_len):
 def dev_point_wise():
     if FLAGS.data=='TREC' or FLAGS.data=='sst2':
         train,dev,test=load_trec_sst2(FLAGS.data)
+    elif FLAGS.data=='ag_news':
+        train, dev = load_ag_news(FLAGS.data)
     else:
         train, dev = load(FLAGS.data)
     q_max_sent_length = max(
@@ -141,6 +145,8 @@ def dev_point_wise():
                     print("{}: step {}, loss {:g}, acc {:g}  in {:.4f} seconds ".format(time_str, step, loss, accuracy,time.time()-start))
                 predicted = predict(sess, cnn, train, alphabet, FLAGS.batch_size, q_max_sent_length)
                 predicted_label = np.argmax(predicted, 1)
+               # print("-"*10)
+               # print(predicted_label)
                 acc_train= accuracy_score(predicted_label,train['flag'])
                 predicted_dev = predict(sess, cnn, dev, alphabet, FLAGS.batch_size, q_max_sent_length)
                 predicted_label = np.argmax(predicted_dev, 1)
