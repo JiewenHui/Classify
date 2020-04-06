@@ -37,6 +37,8 @@ class CNN(object):
         self.question = tf.placeholder(tf.int32,[self.batch_size,self.max_input_left],name = 'input_question')
         if self.dataset=='TREC':
             self.input_y = tf.placeholder(tf.float32, [self.batch_size,6], name = "input_y")
+        elif self.dataset=='ag_news':
+            self.input_y = tf.placeholder(tf.float32, [self.batch_size,4], name = 'input_y')
         else:
             self.input_y = tf.placeholder(tf.float32, [self.batch_size,2], name = "input_y")
         self.q_position = tf.placeholder(tf.int32,[self.batch_size,self.max_input_left],name = 'q_position')
@@ -103,6 +105,9 @@ class CNN(object):
             if self.dataset=='TREC':
                 W = tf.get_variable("W",shape=[2*self.num_filters_total, 6],initializer=tf.contrib.layers.xavier_initializer())
                 b = tf.Variable(tf.constant(0.1, shape=[6]), name="b")
+            elif self.dataset == 'ag_news':
+                W = tf.get_variable("W",shape=[2*self.num_filters_total, 4],initializer=tf.contrib.layers.xavier_initializer())
+                b = tf.Variable(tf.constant(0.1, shape=[4]), name="b")
             else:
                 W = tf.get_variable("W",shape=[2*self.num_filters_total, 2],initializer=tf.contrib.layers.xavier_initializer())
                 b = tf.Variable(tf.constant(0.1, shape=[2]), name="b")
